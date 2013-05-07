@@ -262,7 +262,7 @@ void dtorg_read_list(DTORG_FILELIST *list)
     // Date Time Original Value
     if(is_valid && dtorg_count > 0) {
       dtorg_seek(fp, dtorg_offset + HEADER_BYTES, SEEK_SET, &is_valid);  // offset from beginning
-      dtorg_read(tmp->date_time_original, dtorg_count - 1, fp, &is_valid);
+      dtorg_read(tmp->date_time_original, dtorg_count, fp, &is_valid);
     }
 
     if(fp != NULL)
