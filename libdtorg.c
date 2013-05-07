@@ -241,7 +241,7 @@ void dtorg_read_list(DTORG_FILELIST *list)
 
         if(is_valid) {
           dtorg_count = todecimal(buffer, 4);
-          tmp->date_time_original = (unsigned char *)calloc(dtorg_count, sizeof(unsigned char));
+          tmp->date_time_original = (char *)calloc(dtorg_count, sizeof(char));
 
           if(tmp->date_time_original == NULL)
             is_valid = false;
