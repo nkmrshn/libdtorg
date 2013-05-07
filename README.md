@@ -114,10 +114,10 @@ sample.cをコンパイルする例：
 ----------
 
     typedef struct DTORG_FILELIST_tag {
-      char *filename;                     //  ファイル名
-      unsigned char *date_time_original;  //  原画像データの生成日時
-      struct DTORG_FILELIST_tag *next;    //  次の構造体へのポインタ
-      struct DTORG_FILELIST_tag *last;    //  最後の構造体へのポインタ
+      char *filename;                   //  ファイル名
+      char *date_time_original;         //  原画像データの生成日時
+      struct DTORG_FILELIST_tag *next;  //  次の構造体へのポインタ
+      struct DTORG_FILELIST_tag *last;  //  最後の構造体へのポインタ
     } DTORG_FILELIST;
 
 備考
