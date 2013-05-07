@@ -272,6 +272,15 @@ void dtorg_read_list(DTORG_FILELIST *list)
   free(buffer);
 }
 
+DTORG_FILELIST *dtorg_concat_list(DTORG_FILELIST *dest, DTORG_FILELIST *src)
+{
+  dest->last->next = src;
+  dest->last = src->last;
+  src->last = NULL;
+
+  return dest;
+}
+
 void dtorg_dump_list(DTORG_FILELIST *list)
 {
   DTORG_FILELIST *tmp;
