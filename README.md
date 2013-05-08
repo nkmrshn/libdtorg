@@ -1,7 +1,7 @@
 libdtorg
 ========
 
-指定したディレクトリに保存されているEXIF画像ファイルから、原画像データを生成した日時（DateTimeOriginal）を取得するライブラリです。
+指定したディレクトリに保存されているEXIFファイルから、原画像データを生成した日時（DateTimeOriginal）を取得するライブラリです。
 
 ライブラリの作成
 ----------------
@@ -18,13 +18,9 @@ libdtorg
 サンプルの概要
 --------------
 
-詳しくは、sample.cをご覧下さい。
+sample.cをコンパイルし、実行すると引数で指定したディレクトリに保存されているEXIFファイルのファイル名と原画像データ生成日時を標準出力します。
 
-1. libdtorg.hをincludeしてください。
-2. dtorg_read_dir関数の引数にディレクトリを渡すと、EXIF画像ファイルの連結リストを作成します。
-3. 続いて、dtorg_read_list関数にこの連結リストを渡すと、DateTimeOriginalをEXIFから取得します。
-4. dtorg_dump_list関数で連結リストの内容を標準出力します。
-5. 最後に、連結リストをdtorg_free_list関数で解放するのを忘れずに行って下さい。
+詳しくは、sample.cをご覧下さい。
 
 sample.cをコンパイルする例：
 
@@ -36,6 +32,20 @@ sample.cをコンパイルする例：
 （共有ライブラリ）
 
     $ gcc -I./ -L./ sample.c -o sample -ldtorg
+
+実行例：
+
+    $ ./sample ~/Pictures/
+    /Users/nkmrshn/Pictures/DSCN0001.JPG, 2011:02:23 14:00:03
+    /Users/nkmrshn/Pictures/SH340001.JPG, 2008:02:04 06:25:38
+    /Users/nkmrshn/Pictures/TS3R0001.JPG, 2010:01:01 17:24:02
+
+    $ ./sample ~/Pictures/ ~/Pictures/another
+    /Users/nkmrshn/Pictures/DSCN0001.JPG, 2011:02:23 14:00:03
+    /Users/nkmrshn/Pictures/SH340001.JPG, 2008:02:04 06:25:38
+    /Users/nkmrshn/Pictures/TS3R0001.JPG, 2010:01:01 17:24:02
+    /Users/nkmrshn/Pictures/another/DSCN0002.JPG, 2013:05:06 20:32:39
+    /Users/nkmrshn/Pictures/another/DSCN0003.JPG, 2013:05:06 20:32:41
 
 関数一覧
 --------
