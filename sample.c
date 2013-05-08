@@ -13,13 +13,13 @@ int main(int argc, char *argv[])
     //  実行時、複数のディレクトリが引数に指定してあった場合
     for(i = 1; i < argc; i++) {
       //  連結リストの取得
-      tmp = dtorg_read_dir(argv[i]);
+      if((tmp = dtorg_read_dir(argv[i])) == NULL)
+          continue;
 
-      if(list != NULL)
-        //  リストを連結
-        dtorg_concat_list(list, tmp);
-      else
+      if(list == NULL)
         list = tmp;
+      else
+        dtorg_concat_list(list, tmp);   //  リストを連結
     }
   } else  //  ディレクトリが引数として指定してなかった場合
     list = dtorg_read_dir(".");   //  カレントディレクトリ
