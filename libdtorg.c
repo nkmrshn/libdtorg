@@ -49,6 +49,7 @@ int strrev(char *str, size_t s)
   }
 
   free(tmp);
+  tmp = NULL;
 
   return 0;
 }
@@ -270,6 +271,7 @@ void dtorg_read_list(DTORG_FILELIST *list)
   }
 
   free(buffer);
+  buffer = NULL;
 }
 
 DTORG_FILELIST *dtorg_concat_list(DTORG_FILELIST *dest, DTORG_FILELIST *src)
@@ -298,10 +300,14 @@ void dtorg_free_list(DTORG_FILELIST *list)
     tmp = list;
     list = list->next;
     free(tmp->filename);
+    tmp->filename = NULL;
 
-    if(tmp->date_time_original != NULL)
+    if(tmp->date_time_original != NULL) {
       free(tmp->date_time_original);
+      tmp->date_time_original = NULL;
+    }
 
     free(tmp);
+    tmp = NULL;
   }
 }

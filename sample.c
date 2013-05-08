@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
 
   //  連結リストの解放
   dtorg_free_list(list);
+  list = NULL;
 
   return 0;
 }
