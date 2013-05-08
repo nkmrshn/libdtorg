@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
   DTORG_FILELIST *list, *tmp;   //  連結リスト
   int i;
 
-  //  EXIF画像ファイルの連結リストを取得
+  //  EXIFファイルの連結リストを取得
   if(argc > 1) {
     //  実行時、複数のディレクトリが引数に指定してあった場合
     for(i = 1; i < argc; i++) {
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     dtorg_dump_list(list);
   }
 
-  //  連結リストの解法
+  //  連結リストの解放
   dtorg_free_list(list);
 
   return 0;
