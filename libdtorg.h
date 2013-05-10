@@ -8,10 +8,15 @@ typedef struct DTORG_FILELIST_tag {
   struct DTORG_FILELIST_tag *last;  //  last struct pointer
 } DTORG_FILELIST;
 
-DTORG_FILELIST *dtorg_read_dir(char *);
+DTORG_FILELIST *dtorg_read_dir(char *, int *);
 DTORG_FILELIST *dtorg_concat_list(DTORG_FILELIST *, DTORG_FILELIST *);
 void dtorg_read_list(DTORG_FILELIST *);
+char ***dtorg_list_array(DTORG_FILELIST *, int);
+int dtorg_asc(const void *, const void *);
+int dtorg_desc(const void *, const void *);
 void dtorg_dump_list(DTORG_FILELIST *);
+void dtorg_dump_array(char ***, int);
 void dtorg_free_list(DTORG_FILELIST *);
+void dtorg_free_array(char ***, int);
 
 #endif

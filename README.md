@@ -37,15 +37,15 @@ sample.cをコンパイルする例：
 
     $ ./sample ~/Pictures/
     /Users/nkmrshn/Pictures/DSCN0001.JPG, 2011:02:23 14:00:03
-    /Users/nkmrshn/Pictures/SH340001.JPG, 2008:02:04 06:25:38
     /Users/nkmrshn/Pictures/TS3R0001.JPG, 2010:01:01 17:24:02
+    /Users/nkmrshn/Pictures/SH340001.JPG, 2008:02:04 06:25:38
 
     $ ./sample ~/Pictures/ ~/Pictures/another
-    /Users/nkmrshn/Pictures/DSCN0001.JPG, 2011:02:23 14:00:03
-    /Users/nkmrshn/Pictures/SH340001.JPG, 2008:02:04 06:25:38
-    /Users/nkmrshn/Pictures/TS3R0001.JPG, 2010:01:01 17:24:02
-    /Users/nkmrshn/Pictures/another/DSCN0002.JPG, 2013:05:06 20:32:39
     /Users/nkmrshn/Pictures/another/DSCN0003.JPG, 2013:05:06 20:32:41
+    /Users/nkmrshn/Pictures/another/DSCN0002.JPG, 2013:05:06 20:32:39
+    /Users/nkmrshn/Pictures/DSCN0001.JPG, 2011:02:23 14:00:03
+    /Users/nkmrshn/Pictures/TS3R0001.JPG, 2010:01:01 17:24:02
+    /Users/nkmrshn/Pictures/SH340001.JPG, 2008:02:04 06:25:38
 
 関数一覧
 --------
@@ -54,11 +54,11 @@ sample.cをコンパイルする例：
 
 * 書式
 
-  DTORG_FILELIST *dtorg_read_dir(char *path);
+  DTORG_FILELIST *dtorg_read_dir(char *path, int *count);
 
 * 説明
 
-  pathに指定したディレクトリに保存されているEXIFファイルの連結リストを作成します。ファイル名は、連結リストのfilenameに代入されます。
+  pathに指定したディレクトリに保存されているEXIFファイルの連結リストを作成します。ファイル名は、連結リストのfilenameに代入されます。countは、EXIFファイルの個数を代入する整数型ポインタです。
 
 * 戻り値
 
@@ -92,6 +92,51 @@ sample.cをコンパイルする例：
 
   無し。
 
+###dtorg_list_array
+
+* 書式
+
+  char ***dtorg_list_array(DTORG_FILELIST * list, int count);
+
+* 説明
+
+  結合リストを3次元配列化します。countは、EXIFファイルの個数です。
+
+* 戻り値
+
+  3次元配列へのポインタを返します。
+
+###dtorg_asc
+
+* 書式
+  int dtorg_asc(const void *p1, const void *p2);
+
+* 説明
+
+  3次元配列をqsort関数（stdlib.h）でソートする為の比較関数です。原画像データの生成日時を比較し、昇順になります。
+
+  例）qsort(array, count, sizeof(char ***), dtorg_asc);
+
+* 戻り値
+
+  strcmp関数（string.h）などの比較関数と同じです。
+
+###dtorg_desc
+
+* 書式
+
+  int dtorg_desc(const void *p1, const void *p2h);
+
+* 説明
+
+  3次元配列をqsort関数（stdlib.h）でソートする為の比較関数です。原画像データの生成日時を比較し、降順になります。
+
+  例）qsort(array, count, sizeof(char ***), dtorg_desc);
+
+* 戻り値
+
+  strcmp関数（string.h）などの比較関数と同じです。
+
 ###dtorg_dump_list
 
 * 書式
@@ -106,6 +151,20 @@ sample.cをコンパイルする例：
 
   無し。
 
+###dtorg_dump_array
+
+* 書式
+
+  void dtorg_dump_array(char *** array, int count);
+
+* 説明
+
+  3次元配列の内容を標準出力します。countは、EXIFファイルの個数です。
+
+* 戻り値
+
+  無し。
+
 ###dtorg_free_list
 
 * 書式
@@ -115,6 +174,20 @@ sample.cをコンパイルする例：
 * 説明
 
   連結リストをメモリから解放します。
+
+* 戻り値
+
+  無し。
+
+###dtorg_free_array
+
+* 書式
+
+  void dtorg_free_array(char ***array, int count);
+
+* 説明
+
+  3次元配列をメモリから解放します。countは、EXIFファイルの個数です。
 
 * 戻り値
 

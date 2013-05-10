@@ -54,7 +54,7 @@ int strrev(char *str, size_t s)
   return 0;
 }
 
-DTORG_FILELIST *dtorg_read_dir(char *path)
+DTORG_FILELIST *dtorg_read_dir(char *path, int *count)
 {
   DTORG_FILELIST *list = NULL, *tmp;
   DIR *dir;
@@ -62,6 +62,8 @@ DTORG_FILELIST *dtorg_read_dir(char *path)
   regex_t regst;
   char *actualpath, *delimiter, *pathfmt;
   size_t pathlen, fmtlen;
+
+  *count = 0;
 
   if((dir = opendir(path)) == NULL)
     return NULL;
@@ -95,6 +97,8 @@ DTORG_FILELIST *dtorg_read_dir(char *path)
       if(new_list == NULL)
         continue;
       else {
+        (*count)++;
+
         new_list->filename = filename;
         new_list->date_time_original = NULL;
         new_list->next = NULL;
@@ -283,12 +287,78 @@ DTORG_FILELIST *dtorg_concat_list(DTORG_FILELIST *dest, DTORG_FILELIST *src)
   return dest;
 }
 
+char ***dtorg_list_array(DTORG_FILELIST *list, int count)
+{
+  DTORG_FILELIST *tmp;
+  char ***array;
+  int i;
+
+  array = (char ***)malloc(count * sizeof(char **));
+
+  for(i = 0, tmp = list; tmp != NULL && i < count; i++, tmp = tmp->next) {
+    array[i] = (char **)malloc(2 * sizeof(char *));
+    array[i][0] = malloc((strlen(tmp->filename) + 1) * sizeof(char));
+    strcpy(array[i][0], tmp->filename);
+
+    if(tmp->date_time_original == NULL)
+      array[i][1] = NULL;
+    else {
+      array[i][1] = malloc((strlen(tmp->date_time_original) + 1) * sizeof(char));
+      strcpy(array[i][1], tmp->date_time_original);
+    }
+  }
+
+  return array;
+}
+
+int dtorg_asc(const void *p1, const void *p2)
+{
+  char *dtorg1 = ((char ***)p1)[0][1];
+  char *dtorg2 = ((char ***)p2)[0][1];
+
+  if(dtorg1 == NULL && dtorg2 == NULL)
+    return 0;
+  else if(dtorg1 == NULL)
+    return -1;
+  else if(dtorg2 == NULL)
+    return 1;
+  
+  return strcmp(dtorg1, dtorg2);
+}
+
+int dtorg_desc(const void *p1, const void *p2)
+{
+  char *dtorg1 = ((char ***)p1)[0][1];
+  char *dtorg2 = ((char ***)p2)[0][1];
+
+  if(dtorg1 == NULL && dtorg2 == NULL)
+    return 0;
+  else if(dtorg1 == NULL)
+    return 1;
+  else if(dtorg2 == NULL)
+    return -1;
+
+  return strcmp(dtorg2, dtorg1);
+}
+
 void dtorg_dump_list(DTORG_FILELIST *list)
 {
   DTORG_FILELIST *tmp;
 
   for(tmp = list; tmp != NULL; tmp = tmp->next) {
     printf("%s, %s\n", tmp->filename, tmp->date_time_original);
+  }
+}
+
+void dtorg_dump_array(char ***array, int count)
+{
+  int i;
+
+  if(array == NULL)
+    return;
+
+  for(i = 0; i < count; i++) {
+    printf("%s, %s\n", array[i][0], array[i][1]);
   }
 }
 
@@ -310,4 +380,28 @@ void dtorg_free_list(DTORG_FILELIST *list)
     free(tmp);
     tmp = NULL;
   }
+}
+
+void dtorg_free_array(char ***array, int count)
+{
+  int i;
+
+  if(array == NULL)
+    return;
+
+  for(i = 0; i < count; i++) {
+    free(array[i][0]);
+    array[i][0] = NULL;
+
+    if(array[i][1] != NULL) {
+      free(array[i][1]);
+      array[i][1] = NULL;
+    }
+
+    free(array[i]);
+    array[i] = NULL;
+  }
+
+  free(array);
+  array = NULL;
 }
