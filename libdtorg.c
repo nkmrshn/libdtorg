@@ -293,10 +293,10 @@ char ***dtorg_list_array(DTORG_FILELIST *list, int count)
   char ***array;
   int i;
 
-  array = (char ***)malloc(count * sizeof(char **));
+  array = malloc(count * sizeof(char **));
 
   for(i = 0, tmp = list; tmp != NULL && i < count; i++, tmp = tmp->next) {
-    array[i] = (char **)malloc(2 * sizeof(char *));
+    array[i] = malloc(2 * sizeof(char *));
     array[i][0] = malloc((strlen(tmp->filename) + 1) * sizeof(char));
     strcpy(array[i][0], tmp->filename);
 
