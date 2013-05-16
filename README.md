@@ -64,6 +64,8 @@ sample.cをコンパイルする例：
 
   連結リストのDTORG_FILELISTのポインタを返します。
 
+---
+
 ###dtorg_concat_list
 
 * 書式
@@ -77,6 +79,8 @@ sample.cをコンパイルする例：
 * 戻り値
 
   結果としてできる連結リストdestへのポインタを返します。
+
+---
 
 ###dtorg_read_list
 
@@ -92,6 +96,24 @@ sample.cをコンパイルする例：
 
   無し。
 
+---
+
+###dtorg_sort
+
+* 書式
+
+  DTORG_FILELIST *dtorg_sort(DTORG_FILELIST *list, int count, enum DTORG_SORT_ORDER order);
+
+* 説明
+
+  結合リストのdate_time_originalでソートします。ソート順は、DTORG_SORT_ASC_ORDER（昇順）もしくはDTORG_SORT_DESC_ORDER（降順）を第3引数で指定します。
+
+* 戻り値
+
+ ソートした連結リストのDTORG_FILELISTのポインタを返します。メモリの割り当てに失敗、あるいはcountが0の場合は、NULLを返します。
+
+---
+
 ###dtorg_list_array
 
 * 書式
@@ -104,7 +126,9 @@ sample.cをコンパイルする例：
 
 * 戻り値
 
-  3次元配列へのポインタを返します。
+  3次元配列へのポインタを返します。メモリの割り当てに失敗、あるいはcountが0の場合は、NULLを返します。
+
+---
 
 ###dtorg_asc
 
@@ -120,6 +144,8 @@ sample.cをコンパイルする例：
 * 戻り値
 
   strcmp関数（string.h）などの比較関数と同じです。
+
+---
 
 ###dtorg_desc
 
@@ -137,6 +163,8 @@ sample.cをコンパイルする例：
 
   strcmp関数（string.h）などの比較関数と同じです。
 
+---
+
 ###dtorg_dump_list
 
 * 書式
@@ -150,6 +178,8 @@ sample.cをコンパイルする例：
 * 戻り値
 
   無し。
+
+---
 
 ###dtorg_dump_array
 
@@ -165,6 +195,8 @@ sample.cをコンパイルする例：
 
   無し。
 
+---
+
 ###dtorg_free_list
 
 * 書式
@@ -178,6 +210,8 @@ sample.cをコンパイルする例：
 * 戻り値
 
   無し。
+
+---
 
 ###dtorg_free_array
 

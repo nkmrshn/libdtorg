@@ -33,9 +33,16 @@ int main(int argc, char *argv[])
     //  撮影日時の取得
     dtorg_read_list(list);
 
-    //  連結リストの内容を表示
-    //dtorg_dump_list(list);
+    //  連結リストのソート
+    //list = dtorg_sort(list, total, DTORG_SORT_ASC_ORDER);
+    list = dtorg_sort(list, total, DTORG_SORT_DESC_ORDER);
 
+    //  連結リストの内容を表示
+    dtorg_dump_list(list);
+
+    /*
+     * 配列化によるソート
+     *
     //  連結リストを配列化
     array = dtorg_list_array(list, total);
 
@@ -48,6 +55,7 @@ int main(int argc, char *argv[])
 
     //  配列の解放
     dtorg_free_array(array, total);
+    */
 
     //  連結リストの解放
     dtorg_free_list(list);

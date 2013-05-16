@@ -184,6 +184,78 @@ void dtorg_read_list(DTORG_FILELIST *list)
   buffer = NULL;
 }
 
+int dtorg_sort_asc(const void *p1, const void *p2)
+{
+  char *dtorg1 = ((DTORG_FILELIST **)p1)[0]->date_time_original;
+  char *dtorg2 = ((DTORG_FILELIST **)p2)[0]->date_time_original;
+
+  if(dtorg1 == NULL && dtorg2 == NULL)
+    return 0;
+  else if(dtorg1 == NULL)
+    return -1;
+  else if(dtorg2 == NULL)
+    return 1;
+  
+  return strcmp(dtorg1, dtorg2);
+}
+
+int dtorg_sort_desc(const void *p1, const void *p2)
+{
+  char *dtorg1 = ((DTORG_FILELIST **)p1)[0]->date_time_original;
+  char *dtorg2 = ((DTORG_FILELIST **)p2)[0]->date_time_original;
+
+  if(dtorg1 == NULL && dtorg2 == NULL)
+    return 0;
+  else if(dtorg1 == NULL)
+    return 1;
+  else if(dtorg2 == NULL)
+    return -1;
+  
+  return strcmp(dtorg2, dtorg1);
+}
+
+DTORG_FILELIST *dtorg_sort(DTORG_FILELIST *list, int count, enum DTORG_SORT_ORDER order)
+{
+  DTORG_FILELIST **array, *tmp;
+  int i;
+
+  if(count == 0 || (array = malloc(count * sizeof(DTORG_FILELIST *))) == NULL)
+    return NULL;
+
+  for(i = 0, tmp = list; tmp != NULL && i < count; i++, tmp = tmp->next) {
+    array[i] = tmp;
+  }
+
+  switch(order) {
+    case DTORG_SORT_ASC_ORDER:
+      qsort(array, count, sizeof(DTORG_FILELIST **), dtorg_sort_asc);
+      break;
+    case DTORG_SORT_DESC_ORDER:
+      qsort(array, count, sizeof(DTORG_FILELIST **), dtorg_sort_desc);
+      break;
+  }
+
+  for(i = 0; i < count; i++) {
+    if(i == 0)
+      array[i]->last = array[count - 1];
+    else
+      array[i]->last = NULL;
+
+    if(i == count - 1)
+      array[i]->next = NULL;
+    else {
+      array[i]->next = array[i + 1];
+    }
+  }
+
+  tmp = array[0];
+
+  free(array);
+  array = NULL;
+
+  return tmp;
+}
+
 DTORG_FILELIST *dtorg_concat_list(DTORG_FILELIST *dest, DTORG_FILELIST *src)
 {
   dest->last->next = src;
@@ -199,7 +271,8 @@ char ***dtorg_list_array(DTORG_FILELIST *list, int count)
   char ***array;
   int i;
 
-  array = malloc(count * sizeof(char **));
+  if(count == 0 || (array = malloc(count * sizeof(char **))) == NULL)
+      return NULL;
 
   for(i = 0, tmp = list; tmp != NULL && i < count; i++, tmp = tmp->next) {
     array[i] = malloc(2 * sizeof(char *));
@@ -260,7 +333,7 @@ void dtorg_dump_array(char ***array, int count)
 {
   int i;
 
-  if(array == NULL)
+  if(array == NULL || count == 0)
     return;
 
   for(i = 0; i < count; i++) {
@@ -292,7 +365,7 @@ void dtorg_free_array(char ***array, int count)
 {
   int i;
 
-  if(array == NULL)
+  if(array == NULL || count == 0)
     return;
 
   for(i = 0; i < count; i++) {
