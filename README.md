@@ -8,8 +8,8 @@ libdtorg
 
 静的ライブラリの生成例：
 
-    $ gcc -c libdtorg.c
-    $ ar -r libdtorg.a libdtorg.o
+    $ gcc -c libdtorg.c util.c
+    $ ar -r libdtorg.a libdtorg.o util.o
 
 共有ライブラリの生成例：
 
