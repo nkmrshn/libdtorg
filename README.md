@@ -114,57 +114,6 @@ sample.cをコンパイルする例：
 
 ---
 
-###dtorg_list_array
-
-* 書式
-
-  char ***dtorg_list_array(DTORG_FILELIST * list, int count);
-
-* 説明
-
-  結合リストを3次元配列化します。countは、EXIFファイルの個数です。
-
-* 戻り値
-
-  3次元配列へのポインタを返します。メモリの割り当てに失敗、あるいはcountが0の場合は、NULLを返します。
-
----
-
-###dtorg_asc
-
-* 書式
-  int dtorg_asc(const void *p1, const void *p2);
-
-* 説明
-
-  3次元配列をqsort関数（stdlib.h）でソートする為の比較関数です。原画像データの生成日時を比較し、昇順になります。
-
-  例）qsort(array, count, sizeof(char ***), dtorg_asc);
-
-* 戻り値
-
-  strcmp関数（string.h）などの比較関数と同じです。
-
----
-
-###dtorg_desc
-
-* 書式
-
-  int dtorg_desc(const void *p1, const void *p2h);
-
-* 説明
-
-  3次元配列をqsort関数（stdlib.h）でソートする為の比較関数です。原画像データの生成日時を比較し、降順になります。
-
-  例）qsort(array, count, sizeof(char ***), dtorg_desc);
-
-* 戻り値
-
-  strcmp関数（string.h）などの比較関数と同じです。
-
----
-
 ###dtorg_dump_list
 
 * 書式
@@ -181,22 +130,6 @@ sample.cをコンパイルする例：
 
 ---
 
-###dtorg_dump_array
-
-* 書式
-
-  void dtorg_dump_array(char *** array, int count);
-
-* 説明
-
-  3次元配列の内容を標準出力します。countは、EXIFファイルの個数です。
-
-* 戻り値
-
-  無し。
-
----
-
 ###dtorg_free_list
 
 * 書式
@@ -206,22 +139,6 @@ sample.cをコンパイルする例：
 * 説明
 
   連結リストをメモリから解放します。
-
-* 戻り値
-
-  無し。
-
----
-
-###dtorg_free_array
-
-* 書式
-
-  void dtorg_free_array(char ***array, int count);
-
-* 説明
-
-  3次元配列をメモリから解放します。countは、EXIFファイルの個数です。
 
 * 戻り値
 

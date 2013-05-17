@@ -40,23 +40,6 @@ int main(int argc, char *argv[])
     //  連結リストの内容を表示
     dtorg_dump_list(list);
 
-    /*
-     * 配列化によるソート
-     *
-    //  連結リストを配列化
-    array = dtorg_list_array(list, total);
-
-    //  原画像データの生成日時で並び替え
-    //qsort(array, total, sizeof(char ***), dtorg_asc);
-    qsort(array, total, sizeof(char ***), dtorg_desc);
-
-    //  配列の内容を表示
-    dtorg_dump_array(array, total);
-
-    //  配列の解放
-    dtorg_free_array(array, total);
-    */
-
     //  連結リストの解放
     dtorg_free_list(list);
   }
