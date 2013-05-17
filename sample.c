@@ -6,7 +6,6 @@
 int main(int argc, char *argv[])
 {
   DTORG_FILELIST *list, *tmp;   //  連結リスト
-  char ***array;                //  三次元配列
   int i;
   int count;                    //  連結リストの個数
   int total = 0;
