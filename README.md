@@ -13,7 +13,7 @@ libdtorg
 
 共有ライブラリの生成例：
 
-    $ gcc -shared libdtorg.c -o libdtorg.so
+    $ gcc -shared libdtorg.c util.c -o libdtorg.so
 
 サンプルの概要
 --------------
