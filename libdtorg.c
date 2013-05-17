@@ -4,6 +4,7 @@
 #include <math.h>
 #include <dirent.h>
 #include <regex.h>
+#include <time.h>
 #include "util.h"
 #include "libdtorg.h"
 
@@ -61,6 +62,7 @@ DTORG_FILELIST *dtorg_read_dir(char *path, int *count)
 
         new_list->filename = filename;
         new_list->date_time_original = NULL;
+        new_list->since_1970 = 0;
         new_list->next = NULL;
         new_list->last = NULL;
 
@@ -88,6 +90,7 @@ void dtorg_read_list(DTORG_FILELIST *list)
   unsigned char *buffer = malloc(sizeof(unsigned char) * 6);
   bool is_little_endian, is_valid;
   unsigned long i, dtorg_offset, dtorg_count, entry_count;
+  struct tm date_time;
 
   if(buffer == NULL)
     return;
@@ -174,6 +177,21 @@ void dtorg_read_list(DTORG_FILELIST *list)
     if(is_valid && dtorg_count > 0) {
       vseek(fp, dtorg_offset + HEADER_BYTES, SEEK_SET, &is_valid);  // offset from beginning
       vread(tmp->date_time_original, dtorg_count, fp, &is_valid);
+
+      if(tmp->date_time_original != NULL) {
+        memset(&date_time, 0, sizeof(struct tm));
+        sscanf(tmp->date_time_original, "%d:%d:%d %d:%d:%d",
+            &date_time.tm_year,
+            &date_time.tm_mon,
+            &date_time.tm_mday,
+            &date_time.tm_hour,
+            &date_time.tm_min,
+            &date_time.tm_sec);
+        date_time.tm_year -= 1900;
+        date_time.tm_mon -= 1;
+        date_time.tm_isdst = -1;
+        tmp->since_1970 = mktime(&date_time);
+      }
     }
 
     if(fp != NULL)
@@ -186,32 +204,18 @@ void dtorg_read_list(DTORG_FILELIST *list)
 
 int dtorg_sort_asc(const void *p1, const void *p2)
 {
-  char *dtorg1 = ((DTORG_FILELIST **)p1)[0]->date_time_original;
-  char *dtorg2 = ((DTORG_FILELIST **)p2)[0]->date_time_original;
+  time_t dtorg1 = ((DTORG_FILELIST **)p1)[0]->since_1970;
+  time_t dtorg2 = ((DTORG_FILELIST **)p2)[0]->since_1970;
 
-  if(dtorg1 == NULL && dtorg2 == NULL)
-    return 0;
-  else if(dtorg1 == NULL)
-    return -1;
-  else if(dtorg2 == NULL)
-    return 1;
-  
-  return strcmp(dtorg1, dtorg2);
+  return difftime(dtorg1, dtorg2);
 }
 
 int dtorg_sort_desc(const void *p1, const void *p2)
 {
-  char *dtorg1 = ((DTORG_FILELIST **)p1)[0]->date_time_original;
-  char *dtorg2 = ((DTORG_FILELIST **)p2)[0]->date_time_original;
+  time_t dtorg1 = ((DTORG_FILELIST **)p1)[0]->since_1970;
+  time_t dtorg2 = ((DTORG_FILELIST **)p2)[0]->since_1970;
 
-  if(dtorg1 == NULL && dtorg2 == NULL)
-    return 0;
-  else if(dtorg1 == NULL)
-    return 1;
-  else if(dtorg2 == NULL)
-    return -1;
-  
-  return strcmp(dtorg2, dtorg1);
+  return difftime(dtorg2, dtorg1);
 }
 
 DTORG_FILELIST *dtorg_sort(DTORG_FILELIST *list, int count, enum DTORG_SORT_ORDER order)

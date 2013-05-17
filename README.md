@@ -90,7 +90,7 @@ sample.cをコンパイルする例：
 
 * 説明
 
-  DateTimeOriginalをEXIFから取得し、連結リストのdate_time_originalに代入します。取得できなかった場合は、NULLになります。
+  DateTimeOriginalをEXIFから取得し、連結リストのdate_time_originalとsince_1970に代入します。取得できなかった場合は、date_time_originalはNULL、since_1970は0になります。
 
 * 戻り値
 
@@ -106,7 +106,7 @@ sample.cをコンパイルする例：
 
 * 説明
 
-  結合リストのdate_time_originalでソートします。ソート順は、DTORG_SORT_ASC_ORDER（昇順）もしくはDTORG_SORT_DESC_ORDER（降順）を第3引数で指定します。
+  結合リストのsince_1970でソートします。ソート順は、DTORG_SORT_ASC_ORDER（昇順）もしくはDTORG_SORT_DESC_ORDER（降順）を第3引数で指定します。
 
 * 戻り値
 
@@ -233,6 +233,7 @@ sample.cをコンパイルする例：
     typedef struct DTORG_FILELIST_tag {
       char *filename;                   //  ファイル名
       char *date_time_original;         //  原画像データの生成日時
+      time_t since_1970;                //  1970年からの経過時間
       struct DTORG_FILELIST_tag *next;  //  次の構造体へのポインタ
       struct DTORG_FILELIST_tag *last;  //  最後の構造体へのポインタ
     } DTORG_FILELIST;

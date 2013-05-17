@@ -1,9 +1,12 @@
 #ifndef LIBDTORG_H
 #define LIBDTORG_H
 
+#include <time.h>
+
 typedef struct DTORG_FILELIST_tag {
   char *filename;                   //  Filename
   char *date_time_original;         //  DateTimeOriginal
+  time_t since_1970;                //  Time interval since 1970
   struct DTORG_FILELIST_tag *next;  //  next struct pointer
   struct DTORG_FILELIST_tag *last;  //  last struct pointer
 } DTORG_FILELIST;
